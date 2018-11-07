@@ -1,0 +1,5 @@
+---
+
+- include_tasks: kubernetes.yml
+- include_tasks: helm.yml
+- include_tasks: vaapi.yml
