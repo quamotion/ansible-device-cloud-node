@@ -1,7 +1,7 @@
 ---
 
 - name: Install Helm
-  become: yes
+  become: true
   tasks:
 
   - stat: path=/usr/local/bin/helm
@@ -16,7 +16,7 @@
   - name: Download and install Helm
     unarchive:
       src: https://storage.googleapis.com/kubernetes-helm/helm-{{helm_version}}-linux-amd64.tar.gz
-      remote_src: yes
+      remote_src: true
       dest: ~/helm/
     when: helm_exists.stat.exists == False
 

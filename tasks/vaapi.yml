@@ -1,7 +1,7 @@
 ---
 
 - name: Configure the VA-API drivers
-  become: yes
+  become: true
 
   tasks:
   - name: Add the required apt packages

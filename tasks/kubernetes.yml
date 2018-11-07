@@ -1,7 +1,7 @@
 ---
 
 - name: Prepare a Kubernetes cluster node
-  become: yes
+  become: true
   tasks:
 
   - name: Add the required apt packages
@@ -22,9 +22,9 @@
     sysctl:
      name: net.bridge.bridge-nf-call-iptables
      value: 1
-     sysctl_set: yes
+     sysctl_set: true
      state: present
-     reload: yes
+     reload: true
 
   - name: Add Docker apt key
     apt_key:
@@ -50,7 +50,7 @@
 
   - name: Update apt cache
     apt:
-     update_cache: yes
+     update_cache: true
     when: apt_docker.changed or apt_kubernetes.changed
 
   - name: Install Docker
