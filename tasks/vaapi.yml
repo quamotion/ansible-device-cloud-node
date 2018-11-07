@@ -1,7 +1,8 @@
 ---
 
 - name: Add the required apt packages
-  apt: name={{item}} state=present
-  with_items:
-    - i965-va-driver
-    - libva2
+  apt:
+    pkg:
+      - i965-va-driver
+      - libva2
+    state: present

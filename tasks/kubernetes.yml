@@ -1,26 +1,30 @@
 ---
 
 - name: Add the required apt packages
-  apt: name={{item}} state=present
-  with_items:
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - software-properties-common
-    - aptitude
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - aptitude
+    state: present
 
 - name: Loading the br_netfilter kernel module
   modprobe:
     name: br_netfilter
     state: present
 
-- name: update kernel settings
+- name: Update kernel settings
   sysctl:
     name: net.bridge.bridge-nf-call-iptables
     value: 1
     sysctl_set: true
     state: present
     reload: true
+  # This fails when running inside Docker containers. The molecule tests
+  # use containers, so allow that failure.
+  ignore_errors: true
 
 - name: Add Docker apt key
   apt_key:
@@ -52,6 +56,7 @@
 - name: Install Docker
   apt:
     pkg: docker-ce={{docker-version}}
+    state: present
   register: docker_install
 
 - name: Configure Docker cgroupdriver
@@ -70,11 +75,12 @@
   when: docker_cgroupdriver.changed
 
 - name: Install Kubernetes kubelet kubeadm kubectl
-  apt: name={{item}} state=present
-  with_items:
-    - kubelet={{kubernetes_version}}-00
-    - kubeadm={{kubernetes_version}}-00
-    - kubectl={{kubernetes_version}}-00
+  apt:
+    pkg:
+      - kubelet={{kubernetes_version}}-00
+      - kubeadm={{kubernetes_version}}-00
+      - kubectl={{kubernetes_version}}-00
+    state: present
 
 - name: Load the required kernel modules
   modprobe: name={{item}} state=present
