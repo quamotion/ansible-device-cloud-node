@@ -15,62 +15,62 @@
 
   - name: Loading the br_netfilter kernel module
     modprobe:
-      name: br_netfilter
-      state: present
+     name: br_netfilter
+     state: present
 
   - name: update kernel settings
     sysctl:
-      name: net.bridge.bridge-nf-call-iptables
-      value: 1
-      sysctl_set: yes
-      state: present
-      reload: yes
+     name: net.bridge.bridge-nf-call-iptables
+     value: 1
+     sysctl_set: yes
+     state: present
+     reload: yes
 
   - name: Add Docker apt key
     apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
-      state: present
+     url: https://download.docker.com/linux/ubuntu/gpg
+     state: present
 
   - name: Add Docker apt repository
     apt_repository:
-      repo: deb https://download.docker.com/linux/ubuntu bionic stable
-      state: present
+     repo: deb https://download.docker.com/linux/ubuntu bionic stable
+     state: present
     register: apt_docker
 
   - name: Add Kubernetes apt key
     apt_key:
-      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-      state: present
+     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+     state: present
 
   - name: Add Kubernetes apt repository
     apt_repository:
-      repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-      state: present
+     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+     state: present
     register: apt_kubernetes
 
   - name: Update apt cache
     apt:
-      update_cache: yes
+     update_cache: yes
     when: apt_docker.changed or apt_kubernetes.changed
 
   - name: Install Docker
     apt:
-      pkg: docker-ce={{docker-version}}
+     pkg: docker-ce={{docker-version}}
     register: docker_install
 
   - name: Configure Docker cgroupdriver
     copy:
-      content: |
-               {
-                 "exec-opts": ["native.cgroupdriver=cgroupfs"]
-               }
-      dest: /etc/docker/daemon.json
+     content: |
+              {
+                "exec-opts": ["native.cgroupdriver=cgroupfs"]
+              }
+     dest: /etc/docker/daemon.json
     register: docker_cgroupdriver
 
   - name: Restart docker
     service:
-      name: docker
-      state: restarted
+     name: docker
+     state: restarted
     when: docker_cgroupdriver.changed
 
   - name: Install Kubernetes kubelet kubeadm kubectl

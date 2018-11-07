@@ -6,7 +6,7 @@
 
   - stat: path=/usr/local/bin/helm
     register: helm_exists
-    
+
   - name: Create Helm download folder
     file:
       path=~/helm/
