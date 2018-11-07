@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: device-cloud-node
   author: Frederik Carlier
   description: Configures a server to host the Quamotion Device Cloud.
   company: Quamotion
@@ -11,7 +12,7 @@ galaxy_info:
       versions:
         - xenial
         - bionic
-        
+
   galaxy_tags:
     - quamotion
     - device
