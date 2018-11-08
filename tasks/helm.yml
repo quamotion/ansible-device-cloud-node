@@ -1,6 +1,7 @@
 ---
 
-- stat: path=/usr/local/bin/helm
+- name: Determine whether Helm is already installed
+  stat: path=/usr/local/bin/helm
   register: helm_exists
 
 - name: Create Helm download folder
