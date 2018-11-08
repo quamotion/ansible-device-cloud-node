@@ -5,7 +5,7 @@
   register: kubernetes_init_stat
 
 - name: Run kubeadm init
-  shell: kubeadm init --pod-network-cidr={{pod_network}} --token {{kubeadm_token}} --kubernetes-version v{{kubernetes_version}}
+  shell: kubeadm init --pod-network-cidr={{pod_network}} --token {{kubeadm_token}} --kubernetes-version v{{kubernetes_version}} --apiserver-cert-extra-sans={{ inventory_hostname }}
   when: kubernetes_init_stat.stat.exists == false
 
   # Only taint the master node if no worker nodes exist.
