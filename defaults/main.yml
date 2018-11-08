@@ -4,4 +4,9 @@ docker_version: 18.06.0~ce~3-0~ubuntu
 helm_version: v2.11.0
 pod_network: 10.244.0.0/16
 kubeadm_token: a64b93.7ce2f940e0961d56
-flannel_version: 0.10.0
+
+# Flannel v0.10.0 doesn't work properly with Kubernetes 1.12+, see
+# https://github.com/coreos/flannel/issues/1044#issuecomment-425519107
+# and https://github.com/coreos/flannel/pull/1045
+# We can reset this to v0.11.0 once this is fixed.
+flannel_version: bc79dd1505b0c8681ece4de4c0d86c5cd2643275
