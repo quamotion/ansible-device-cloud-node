@@ -40,6 +40,8 @@
   fetch:
     src: ~/.kube/config
     dest: kubeconfig
+  become: false
 
 - name: Configure networking
   shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v{{flannel_version}}/Documentation/kube-flannel.yml
+  become: false
