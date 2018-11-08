@@ -1,5 +1,5 @@
 ---
-- name: Check wheter Kubernetes has already been initialized.
+- name: Check whether Kubernetes has already been initialized.
   stat:
     path: /etc/kubernetes/admin.conf
   register: kubernetes_init_stat
@@ -18,19 +18,23 @@
   file:
     path=~/.kube
     state=absent
+  become: false
 
 - name: Create the Kubernetes configuration directory
   file:
     path=~/.kube
     state=directory
+  become: false
 
 - name: Copy the Kubernetes configuration files
   shell: |
     sudo cp -i /etc/kubernetes/admin.conf ~/.kube/config
+  become: false
 
 - name: Fix permissions on the Kubernetes configuration file
   shell: |
     sudo chown $(id -u):$(id -g) ~/.kube/config
+  become: false
 
 - name: Copy the Kubernetes configuration file
   fetch:
@@ -38,4 +42,4 @@
     dest: kubeconfig
 
 - name: Configure networking
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v{{flannel-version}}/Documentation/kube-flannel.yml
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v{{flannel_version}}/Documentation/kube-flannel.yml
