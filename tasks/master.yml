@@ -1,0 +1,41 @@
+---
+- name: Check wheter Kubernetes has already been initialized.
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: kubernetes_init_stat
+
+- name: Run kubeadm init
+  shell: kubeadm init --pod-network-cidr={{pod_network}} --token {{kubeadm_token}} --kubernetes-version v{{kubernetes_version}}
+  when: kubernetes_init_stat.stat.exists == false
+
+  # Only taint the master node if no worker nodes exist.
+- name: Tainting the master node
+  command: kubectl taint nodes --all node-role.kubernetes.io/master-
+  ignore_errors: yes
+  when: "'device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0"
+
+- name: Remove the Kubernetes configuration directory
+  file:
+    path=~/.kube
+    state=absent
+
+- name: Create the Kubernetes configuration directory
+  file:
+    path=~/.kube
+    state=directory
+
+- name: Copy the Kubernetes configuration files
+  shell: |
+    sudo cp -i /etc/kubernetes/admin.conf ~/.kube/config
+
+- name: Fix permissions on the Kubernetes configuration file
+  shell: |
+    sudo chown $(id -u):$(id -g) ~/.kube/config
+
+- name: Copy the Kubernetes configuration file
+  fetch:
+    src: ~/.kube/config
+    dest: kubeconfig
+
+- name: Configure networking
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v{{flannel-version}}/Documentation/kube-flannel.yml

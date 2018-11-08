@@ -3,5 +3,34 @@
 - block:
   - include_tasks: kubernetes.yml
   - include_tasks: helm.yml
+    when: device_farm_role == 'master'
+    
   - include_tasks: vaapi.yml
+
+  # Set up master.
+  - include_tasks: master.yml
+    when: device_farm_role == 'master'
+    
+  # Set up nodes. Borrowed from https://github.com/geerlingguy/ansible-role-kubernetes/blob/master/tasks/main.yml
+  - name: Get the kubeadm join command from the Kubernetes master.
+    command: kubeadm token create --print-join-command
+    changed_when: false
+    when: device_farm_role == 'master'
+    register: kubeadm_print_join_command_result
+
+  - name: Set the kubeadm join command globally.
+    set_fact:
+      kubeadm_join_command: "{{ kubeadm_print_join_command_result.stdout }}"
+    when: kubeadm_print_join_command_result.stdout is defined
+    delegate_to: "{{ item }}"
+    delegate_facts: true
+    with_items: "{{ groups['all'] }}"
+
+  # Configure worker nodes
+  - include_tasks: worker.yml
+    when: device_farm_role == 'worker'
+
+  - include_tasks: cluster-ready.yml
+    when: device_farm_role == 'master'
+
   become: true
