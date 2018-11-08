@@ -55,7 +55,7 @@
 
 - name: Install Docker
   apt:
-    pkg: docker-ce={{docker-version}}
+    pkg: docker-ce={{docker_version}}
     state: present
   register: docker_install
 
