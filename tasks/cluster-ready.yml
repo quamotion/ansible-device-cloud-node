@@ -6,3 +6,4 @@
   until: kubectl_nodes.stdout.find('NotReady') == -1
   delay: 1
   retries: 100
+  become: false
