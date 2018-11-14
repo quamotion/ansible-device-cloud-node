@@ -89,3 +89,6 @@
     - ip_vs_rr
     - ip_vs_wrr
     - ip_vs_sh
+
+- name: Pull the Kubernetes images
+  shell: kubeadm config images pull --kubernetes-version v{{kubernetes_version}}
