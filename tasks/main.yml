@@ -3,7 +3,7 @@
 - block:
   - include_tasks: kubernetes.yml
   - include_tasks: helm.yml
-    when: device_farm_role == 'master'
+    when: device_farm_role is defined AND device_farm_role == 'master'
     
   - include_tasks: vaapi.yml
 
