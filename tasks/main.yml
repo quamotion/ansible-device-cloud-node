@@ -9,13 +9,13 @@
 
   # Set up master.
   - include_tasks: master.yml
-    when: device_farm_role == 'master'
+    when: device_farm_role is defined AND device_farm_role == 'master'
     
   # Set up nodes. Borrowed from https://github.com/geerlingguy/ansible-role-kubernetes/blob/master/tasks/main.yml
   - name: Get the kubeadm join command from the Kubernetes master.
     command: kubeadm token create --print-join-command
     changed_when: false
-    when: device_farm_role == 'master'
+    when: device_farm_role is defined AND device_farm_role == 'master'
     register: kubeadm_print_join_command_result
 
   - name: Set the kubeadm join command globally.
@@ -28,9 +28,9 @@
 
   # Configure worker nodes
   - include_tasks: worker.yml
-    when: device_farm_role == 'worker'
+    when: device_farm_role is defined AND device_farm_role == 'worker'
 
   - include_tasks: cluster-ready.yml
-    when: device_farm_role == 'master'
+    when: device_farm_role is defined AND device_farm_role == 'master'
 
   become: true
