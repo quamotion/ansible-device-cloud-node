@@ -88,6 +88,3 @@
 - name: Waiting for Helm to become available
   command: kubectl rollout status -w deployment/tiller-deploy --namespace=kube-system
   become: false
-
-- command: "kubectl get svc -n kube-system tiller-deploy -o jsonpath='{.spec.clusterIP}'"
-  register: tiller_host
