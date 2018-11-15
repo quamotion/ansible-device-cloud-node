@@ -68,21 +68,26 @@
           name: helm
           namespace: kube-system
     dest: ~/helm-service-account.yml
+  become: false
   when: helm_exists.stat.exists == False
 
 - name: Delete Helm service accounts
   command: kubectl delete --ignore-not-found=true -f ~/helm-service-account.yml
+  become: false
   when: helm_exists.stat.exists == False
 
 - name: Create Helm service accounts
   command: kubectl create -f ~/helm-service-account.yml
+  become: false
   when: helm_exists.stat.exists == False
 
 - name: Initializing Helm
   command: helm init --service-account helm
+  become: false
 
 - name: Waiting for Helm to become available
   command: kubectl rollout status -w deployment/tiller-deploy --namespace=kube-system
+  become: false
 
 - command: "kubectl get svc -n kube-system tiller-deploy -o jsonpath='{.spec.clusterIP}'"
   register: tiller_host
