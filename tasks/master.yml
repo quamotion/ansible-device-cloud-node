@@ -45,3 +45,44 @@
   shell: kubectl taint nodes --all node-role.kubernetes.io/master-
   become: false
   when: "'device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0"
+
+- name: Configure Helm service account YAML configuration
+  copy:
+    content: |
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: helm
+        namespace: kube-system
+      ---
+      apiVersion: rbac.authorization.k8s.io/v1beta1
+      kind: ClusterRoleBinding
+      metadata:
+        name: helm
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: cluster-admin
+      subjects:
+        - kind: ServiceAccount
+          name: helm
+          namespace: kube-system
+    dest: ~/helm-service-account.yml
+  when: helm_exists.stat.exists == False
+
+- name: Delete Helm service accounts
+  command: kubectl delete --ignore-not-found=true -f ~/helm-service-account.yml
+  when: helm_exists.stat.exists == False
+
+- name: Create Helm service accounts
+  command: kubectl create -f ~/helm-service-account.yml
+  when: helm_exists.stat.exists == False
+
+- name: Initializing Helm
+  command: helm init --service-account helm
+
+- name: Waiting for Helm to become available
+  command: kubectl rollout status -w deployment/tiller-deploy --namespace=kube-system
+
+- command: "kubectl get svc -n kube-system tiller-deploy -o jsonpath='{.spec.clusterIP}'"
+  register: tiller_host
