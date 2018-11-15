@@ -43,5 +43,5 @@
   # Only taint the master node if no worker nodes exist.
 - name: Tainting the master node
   shell: kubectl taint nodes --all node-role.kubernetes.io/master-
-  ignore_errors: yes
+  become: false
   when: "'device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0"
