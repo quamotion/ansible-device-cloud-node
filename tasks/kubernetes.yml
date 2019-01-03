@@ -59,6 +59,14 @@
     state: present
   register: docker_install
 
+- name: Create /etc/docker directory
+  file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: 700
+
 - name: Configure Docker cgroupdriver
   copy:
     content: |
