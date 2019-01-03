@@ -100,3 +100,4 @@
 
 - name: Pull the Kubernetes images
   shell: kubeadm config images pull --kubernetes-version v{{kubernetes_version}}
+  when: preseed_docker_images

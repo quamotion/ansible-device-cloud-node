@@ -5,6 +5,11 @@ helm_version: v2.11.0
 pod_network: 10.244.0.0/16
 kubeadm_token: a64b93.7ce2f940e0961d56
 
+# By default, use kubeadm to preseed the docker images used by Kubernetes
+# onto the host. You may want to disable this on environments where Docker
+# does not run, such as in chroot() jails
+preseed_docker_images: true
+
 # Flannel v0.10.0 doesn't work properly with Kubernetes 1.12+, see
 # https://github.com/coreos/flannel/issues/1044#issuecomment-425519107
 # and https://github.com/coreos/flannel/pull/1045
