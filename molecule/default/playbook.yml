@@ -3,5 +3,6 @@
   hosts: all
   vars:
     - load_kernel_modules: false
+    - preseed_docker_images: false
   roles:
     - role: ansible-device-cloud-node
