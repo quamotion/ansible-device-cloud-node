@@ -7,11 +7,21 @@ lint:
   name: yamllint
 platforms:
   - name: bionic
-    image: ubuntu:18.04
+    image: geerlingguy/docker-ubuntu1804-ansible:latest
     privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/lib/docker
+    privileged: true
+    pre_build_image: true
   - name: xenial
-    image: ubuntu:16.04
+    image: geerlingguy/docker-ubuntu1604-ansible:latest
     privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/lib/docker
+    privileged: true
+    pre_build_image: true
 provisioner:
   name: ansible
   lint:
