@@ -88,4 +88,3 @@
 - name: Waiting for Helm to become available
   command: kubectl rollout status -w deployment/tiller-deploy --namespace=kube-system
   become: false
-  

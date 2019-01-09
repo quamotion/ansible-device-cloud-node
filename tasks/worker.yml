@@ -1,4 +1,4 @@
---- 
+---
 
 - name: Join node to the Kubernetes cluster
   shell: >
