@@ -6,3 +6,12 @@
       - i965-va-driver
       - libva2
     state: present
+  when: "ansible_distribution|string == 'Ubuntu' and ansible_distribution_release|string != 'xenial'"
+
+- name: Add the required apt packages
+  apt:
+    pkg:
+      - i965-va-driver
+      - libva1
+    state: present
+  when: "ansible_distribution|string == 'Ubuntu' and ansible_distribution_release|string == 'xenial'"
