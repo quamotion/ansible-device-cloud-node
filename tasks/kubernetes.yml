@@ -9,11 +9,15 @@
       - software-properties-common
       - aptitude
     state: present
+    # Make sure to run apt-get update first. For example, when running
+    # inside a Docker container, the cache will be empty at first.
+    update_cache: true
 
 - name: Loading the br_netfilter kernel module
   modprobe:
     name: br_netfilter
     state: present
+  when: load_kernel_modules
 
 - name: Update kernel settings
   sysctl:
