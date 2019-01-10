@@ -5,7 +5,12 @@
   register: kubernetes_init_stat
 
 - name: Run kubeadm init
-  shell: kubeadm init --pod-network-cidr={{ pod_network }} --token {{ kubeadm_token }} --kubernetes-version v{{ kubernetes_version }} --apiserver-cert-extra-sans={{ inventory_hostname }}
+  shell: >-
+    kubeadm init
+      --pod-network-cidr={{ pod_network }}
+      --token {{ kubeadm_token }}
+      --kubernetes-version v{{ kubernetes_version }}
+      --apiserver-cert-extra-sans={{ inventory_hostname }}
   when: not kubernetes_init_stat.stat.exists
 
 - name: Remove the Kubernetes configuration directory
@@ -37,7 +42,10 @@
   become: false
 
 - name: Configure networking
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/{{ flannel_version }}/Documentation/kube-flannel.yml
+  shell: >-
+    kubectl
+       apply
+      -f https://raw.githubusercontent.com/coreos/flannel/{{ flannel_version }}/Documentation/kube-flannel.yml
   become: false
 
   # Only taint the master node if no worker nodes exist.
