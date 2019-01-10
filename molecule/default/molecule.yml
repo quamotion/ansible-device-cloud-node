@@ -29,6 +29,7 @@ provisioner:
         - ANSIBLE0012  # Commands should not change things if nothing needs doing.
         - ANSIBLE0013  # Use shell only when shell functionality is required
         - ANSIBLE0016
+        - 405  # Remote package tasks should have a retry
 scenario:
   name: default
 verifier:
