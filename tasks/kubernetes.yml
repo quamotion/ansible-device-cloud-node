@@ -59,7 +59,7 @@
 
 - name: Install Docker
   apt:
-    pkg: docker-ce={{docker_version}}
+    pkg: docker-ce={{ docker_version }}
     state: present
   register: docker_install
 
@@ -89,13 +89,13 @@
 - name: Install Kubernetes kubelet kubeadm kubectl
   apt:
     pkg:
-      - kubelet={{kubernetes_version}}-00
-      - kubeadm={{kubernetes_version}}-00
-      - kubectl={{kubernetes_version}}-00
+      - kubelet={{ kubernetes_version }}-00
+      - kubeadm={{ kubernetes_version }}-00
+      - kubectl={{ kubernetes_version }}-00
     state: present
 
 - name: Load the required kernel modules
-  modprobe: name={{item}} state=present
+  modprobe: name={{ item }} state=present
   with_items:
     - ip_vs
     - ip_vs_rr
@@ -104,5 +104,5 @@
   when: load_kernel_modules
 
 - name: Pull the Kubernetes images
-  shell: kubeadm config images pull --kubernetes-version v{{kubernetes_version}}
+  shell: kubeadm config images pull --kubernetes-version v{{ kubernetes_version }}
   when: preseed_docker_images
