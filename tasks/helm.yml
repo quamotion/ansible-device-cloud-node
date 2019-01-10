@@ -8,21 +8,21 @@
   file:
     path=~/helm/
     state=directory
-  when: helm_exists.stat.exists == False
+  when: not helm_exists.stat.exists
 
 - name: Download and install Helm
   unarchive:
     src: https://storage.googleapis.com/kubernetes-helm/helm-{{helm_version}}-linux-amd64.tar.gz
     remote_src: true
     dest: ~/helm/
-  when: helm_exists.stat.exists == False
+  when: not helm_exists.stat.exists
 
 - name: Move helm binary
   command: sudo mv ~/helm/linux-amd64/helm /usr/local/bin/helm
-  when: helm_exists.stat.exists == False
+  when: not helm_exists.stat.exists
 
 - name: Delete Helm download folder
   file:
     path: ~/helm/
     state: absent
-  when: helm_exists.stat.exists == False
+  when: not helm_exists.stat.exists

@@ -6,7 +6,7 @@
 
 - name: Run kubeadm init
   shell: kubeadm init --pod-network-cidr={{pod_network}} --token {{kubeadm_token}} --kubernetes-version v{{kubernetes_version}} --apiserver-cert-extra-sans={{ inventory_hostname }}
-  when: kubernetes_init_stat.stat.exists == false
+  when: not kubernetes_init_stat.stat.exists
 
 - name: Remove the Kubernetes configuration directory
   file:
@@ -69,17 +69,17 @@
           namespace: kube-system
     dest: ~/helm-service-account.yml
   become: false
-  when: helm_exists.stat.exists == False
+  when: not helm_exists.stat.exists
 
 - name: Delete Helm service accounts
   command: kubectl delete --ignore-not-found=true -f ~/helm-service-account.yml
   become: false
-  when: helm_exists.stat.exists == False
+  when: not helm_exists.stat.exists
 
 - name: Create Helm service accounts
   command: kubectl create -f ~/helm-service-account.yml
   become: false
-  when: helm_exists.stat.exists == False
+  when: not helm_exists.stat.exists
 
 - name: Initializing Helm
   command: helm init --service-account helm
