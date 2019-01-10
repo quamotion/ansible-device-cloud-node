@@ -13,6 +13,6 @@ before_install:
   - ansible --version
   - docker version
 install:
-  - pip install molecule docker
+  - pip install ansible-lint molecule docker
 script:
   - molecule test
