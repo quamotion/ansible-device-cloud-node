@@ -11,6 +11,8 @@
     --token {{ kubeadm_token }}
     --kubernetes-version v{{ kubernetes_version }}
     --apiserver-cert-extra-sans={{ inventory_hostname }}
+    --ignore-preflight-errors={{ kubernetes_ignore_preflight_errors }}
+    {{ kubernetes_kubeadm_init_extra_opts }}
   when: not kubernetes_init_stat.stat.exists
 
 - name: Remove the Kubernetes configuration directory

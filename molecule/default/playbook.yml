@@ -5,5 +5,9 @@
     - load_kernel_modules: false
     - preseed_docker_images: false
     - device_farm_role: master
+    - kubernetes_ignore_preflight_errors:
+        "Service-Docker,\
+        SystemVerification,\
+        FileContent--proc-sys-net-bridge-bridge-nf-call-iptables"
   roles:
     - role: ansible-device-cloud-node
