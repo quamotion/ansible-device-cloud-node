@@ -44,8 +44,8 @@
 - name: Configure networking
   shell: >-
     kubectl
-       apply
-      -f https://raw.githubusercontent.com/coreos/flannel/{{ flannel_version }}/Documentation/kube-flannel.yml
+    apply
+    -f https://raw.githubusercontent.com/coreos/flannel/{{ flannel_version }}/Documentation/kube-flannel.yml
   become: false
 
   # Only taint the master node if no worker nodes exist.
