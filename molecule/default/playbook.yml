@@ -4,5 +4,6 @@
   vars:
     - load_kernel_modules: false
     - preseed_docker_images: false
+    - device_farm_role: master
   roles:
     - role: ansible-device-cloud-node

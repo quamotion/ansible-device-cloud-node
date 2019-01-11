@@ -13,6 +13,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /var/lib/docker
     pre_build_image: true
+    command: ""
   - name: xenial
     image: geerlingguy/docker-ubuntu1604-ansible:latest
     privileged: true
@@ -20,6 +21,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /var/lib/docker
     pre_build_image: true
+    command: ""
 provisioner:
   name: ansible
   lint:
