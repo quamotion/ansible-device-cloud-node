@@ -14,6 +14,20 @@
     --ignore-preflight-errors={{ kubernetes_ignore_preflight_errors }}
     {{ kubernetes_kubeadm_init_extra_opts }}
   when: not kubernetes_init_stat.stat.exists
+  ignore_errors: true
+  register: kubeadm_init
+
+- name: Get kubelet logs
+  shell: journalctl -u kubelet
+  when: not kubernetes_init_stat.stat.exists and kubeadm_init.failed
+  register: kubelet_logs
+
+- fail:
+    msg: |
+      kubeadm init failed to set up the cluster.
+      Additional information information may be available in the kubelet logs:
+      {{ kubelet_logs.stdout }}
+  when: not kubernetes_init_stat.stat.exists and kubeadm_init.failed
 
 - name: Remove the Kubernetes configuration directory
   file:
