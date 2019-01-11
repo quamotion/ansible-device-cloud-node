@@ -67,7 +67,7 @@
 - name: Tainting the master node
   shell: kubectl taint nodes --all node-role.kubernetes.io/master-
   become: false
-  when: "'device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0"
+  when: "not kubernetes_init_stat.stat.exists and ('device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0)"
 
 - name: Configure Helm service account YAML configuration
   copy:
