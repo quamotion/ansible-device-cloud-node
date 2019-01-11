@@ -42,5 +42,7 @@
     when:
       - device_farm_role is defined
       - device_farm_role == 'master'
+      - kubernetes_init_stat.stat is defined
+      - not kubernetes_init_stat.stat.exists
 
   become: true

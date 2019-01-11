@@ -27,6 +27,7 @@
       kubeadm init failed to set up the cluster.
       Additional information information may be available in the kubelet logs:
       {{ kubelet_logs.stdout }}
+  name: Fail when kubeadm init fails
   when: not kubernetes_init_stat.stat.exists and kubeadm_init.failed
 
 - name: Remove the Kubernetes configuration directory
@@ -34,22 +35,26 @@
     path=~/.kube
     state=absent
   become: false
+  when: not kubernetes_init_stat.stat.exists
 
 - name: Create the Kubernetes configuration directory
   file:
     path=~/.kube
     state=directory
   become: false
+  when: not kubernetes_init_stat.stat.exists
 
 - name: Copy the Kubernetes configuration files
   shell: |
     sudo cp -i /etc/kubernetes/admin.conf ~/.kube/config
   become: false
+  when: not kubernetes_init_stat.stat.exists
 
 - name: Fix permissions on the Kubernetes configuration file
   shell: |
     sudo chown $(id -u):$(id -g) ~/.kube/config
   become: false
+  when: not kubernetes_init_stat.stat.exists
 
 - name: Copy the Kubernetes configuration file
   fetch:
@@ -62,12 +67,15 @@
     kubectl
     apply -f https://raw.githubusercontent.com/coreos/flannel/{{ flannel_version }}/Documentation/kube-flannel.yml
   become: false
+  when: not kubernetes_init_stat.stat.exists
 
   # Only taint the master node if no worker nodes exist.
 - name: Tainting the master node
   shell: kubectl taint nodes --all node-role.kubernetes.io/master-
   become: false
-  when: "not kubernetes_init_stat.stat.exists and ('device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0)"
+  when: >-
+    not kubernetes_init_stat.stat.exists
+    and ('device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0)
 
 - name: Configure Helm service account YAML configuration
   copy:
@@ -107,7 +115,9 @@
 - name: Initializing Helm
   command: helm init --service-account helm
   become: false
+  when: not helm_exists.stat.exists
 
 - name: Waiting for Helm to become available
   command: kubectl rollout status -w deployment/tiller-deploy --namespace=kube-system
   become: false
+  when: not helm_exists.stat.exists
