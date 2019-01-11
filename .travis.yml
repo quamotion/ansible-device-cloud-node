@@ -2,6 +2,12 @@
 sudo: required
 language: python
 cache: pip
+
+env:
+  matrix:
+    - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: ubuntu1604
+
 before_install:
   - swapoff -a
   - cat ci/daemon.json | sudo tee /etc/docker/daemon.json

@@ -6,16 +6,8 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: bionic
-    image: geerlingguy/docker-ubuntu1804-ansible:latest
-    privileged: true
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - /var/lib/docker
-    pre_build_image: true
-    command: ""
-  - name: xenial
-    image: geerlingguy/docker-ubuntu1604-ansible:latest
+  - name: ${MOLECULE_DISTRO:-ubuntu1804}
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu1804}-ansible:latest
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
