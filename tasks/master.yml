@@ -77,15 +77,20 @@
     not kubernetes_init_stat.stat.exists
     and ('device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0)
 
-- name: Configure Helm service account YAML configuration
-  copy:
-    content: |
+- name: Craete Helm service account
+  k8s:
+    state: present
+    definition:
       apiVersion: v1
       kind: ServiceAccount
       metadata:
         name: helm
         namespace: kube-system
-      ---
+
+- name: Create Helm ClusterRoleBinding
+  k8s:
+    state: present
+    definition:
       apiVersion: rbac.authorization.k8s.io/v1beta1
       kind: ClusterRoleBinding
       metadata:
@@ -98,19 +103,6 @@
         - kind: ServiceAccount
           name: helm
           namespace: kube-system
-    dest: ~/helm-service-account.yml
-  become: false
-  when: not helm_exists.stat.exists
-
-- name: Delete Helm service accounts
-  command: kubectl delete --ignore-not-found=true -f ~/helm-service-account.yml
-  become: false
-  when: not helm_exists.stat.exists
-
-- name: Create Helm service accounts
-  command: kubectl create -f ~/helm-service-account.yml
-  become: false
-  when: not helm_exists.stat.exists
 
 - name: Initializing Helm
   command: helm init --service-account helm

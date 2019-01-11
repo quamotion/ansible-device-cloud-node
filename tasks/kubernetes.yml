@@ -13,6 +13,10 @@
     # inside a Docker container, the cache will be empty at first.
     update_cache: true
 
+- name: Install the OpenShift pip package (required by the k8s module)
+  pip:
+    name: openshift
+
 - name: Loading the br_netfilter kernel module
   modprobe:
     name: br_netfilter
