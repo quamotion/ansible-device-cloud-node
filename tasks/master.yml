@@ -5,7 +5,7 @@
   register: kubernetes_init_stat
 
 - name: Run kubeadm init
-  shell: >-
+  command: >-
     kubeadm init
     --pod-network-cidr={{ pod_network }}
     --token {{ kubeadm_token }}
@@ -18,7 +18,7 @@
   register: kubeadm_init
 
 - name: Get kubelet logs
-  shell: journalctl -u kubelet
+  command: journalctl -u kubelet
   when: not kubernetes_init_stat.stat.exists and kubeadm_init.failed
   register: kubelet_logs
 
@@ -45,7 +45,7 @@
   when: not kubernetes_init_stat.stat.exists
 
 - name: Copy the Kubernetes configuration files
-  shell: |
+  command: |
     sudo cp -i /etc/kubernetes/admin.conf ~/.kube/config
   become: false
   when: not kubernetes_init_stat.stat.exists
@@ -63,7 +63,7 @@
   become: false
 
 - name: Configure networking
-  shell: >-
+  command: >-
     kubectl
     apply -f https://raw.githubusercontent.com/coreos/flannel/{{ flannel_version }}/Documentation/kube-flannel.yml
   become: false
@@ -71,7 +71,7 @@
 
   # Only taint the master node if no worker nodes exist.
 - name: Tainting the master node
-  shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+  command: kubectl taint nodes --all node-role.kubernetes.io/master-
   become: false
   when: >-
     not kubernetes_init_stat.stat.exists
