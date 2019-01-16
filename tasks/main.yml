@@ -2,6 +2,7 @@
 
 - block:
   - include_tasks: kubernetes.yml
+  - include_tasks: gitlab-runner.yml
   - include_tasks: helm.yml
     when:
       - device_farm_role is defined
