@@ -1,0 +1,17 @@
+---
+
+- name: Add GitLab Runner GPG key
+  apt_key:
+    url: "{{ gitlab_runner_gpg }}"
+
+- name: Add GitLab Runner repository
+  apt_repository:
+    repo: "{{ gitlab_runner_repo }}"
+    validate_certs: true
+
+- name: Install GitLab runner {{ gitlab_runner_package }}
+  apt:
+    name: "{{ gitlab_runner_package }}"
+    state: present
+    update_cache: true
+  register: installed_gitlab
