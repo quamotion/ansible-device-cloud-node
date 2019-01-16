@@ -8,6 +8,7 @@
       - curl
       - software-properties-common
       - aptitude
+      - python-pip
     state: present
     # Make sure to run apt-get update first. For example, when running
     # inside a Docker container, the cache will be empty at first.
