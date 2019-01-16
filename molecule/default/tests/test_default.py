@@ -1,4 +1,5 @@
 import os
+import pytest
 
 import testinfra.utils.ansible_runner
 
@@ -6,40 +7,40 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
-def test_kubelet_is_installed(host):
-    kubelet = host.package('kubelet')
+# These packages must be installed, and at the correct version
+@pytest.mark.parametrize('name,version', [
+  ('kubelet', '1.12.1'),
+  ('kubeadm', '1.12.1'),
+  ('kubectl', '1.12.1'),
+  ('docker-ce', '18.06.0')
+])
+def test_package_is_installed(host, name, version):
+    package = host.package(name)
 
-    assert kubelet.is_installed
-
-
-def test_kubeadm_is_installed(host):
-    kubeadm = host.package('kubeadm')
-
-    assert kubeadm.is_installed
-
-
-def test_kubectl_is_installed(host):
-    kubectl = host.package('kubectl')
-
-    assert kubectl.is_installed
+    assert package.is_installed
+    assert package.version.startswith(version)
 
 
-def test_docker_is_installed(host):
-    docker = host.package('docker-ce')
+# These services must be enabled.
+@pytest.mark.parametrize('name', [
+    'docker',
+    'kubelet'
+])
+def test_service_is_enabled(host, name):
+    service = host.service(name)
 
-    assert docker.is_installed
+    assert service.is_enabled
 
 
-def test_docker_is_enabled(host):
-    docker = host.service("docker")
+# These sevices must be running
+@pytest.mark.parametrize('name', [
+    'docker',
+    'kubelet'
+])
+def test_service_is_running(host, name):
+    service = host.service(name)
 
-    assert docker.is_enabled
-
-
-def test_docker_is_running(host):
-    docker = host.service("docker")
-
-    assert docker.is_running
+    assert service.is_running
 
 
 def test_docker_version_works(host):
