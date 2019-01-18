@@ -2,13 +2,21 @@
 
 - block:
   - include_tasks: kubernetes.yml
+    when:
+      - device_farm_role is defined
+
   - include_tasks: gitlab-runner.yml
+    when:
+      - device_farm_role is defined
+
   - include_tasks: helm.yml
     when:
       - device_farm_role is defined
       - device_farm_role == 'master'
 
   - include_tasks: vaapi.yml
+    when:
+      - device_farm_role is defined
 
   # Set up master.
   - include_tasks: master.yml
