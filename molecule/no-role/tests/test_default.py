@@ -18,7 +18,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
   'libva1',
   'libva2'
 ])
-def test_package_is_installed(host, name, version):
+def test_package_is_installed(host, name):
     package = host.package(name)
 
     assert not package.is_installed
