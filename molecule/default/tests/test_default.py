@@ -12,13 +12,30 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
   ('kubelet', '1.12.1'),
   ('kubeadm', '1.12.1'),
   ('kubectl', '1.12.1'),
-  ('docker-ce', '18.06.0')
+  ('docker-ce', '18.06.0'),
+  ('gitlab-runner', '11.6'),
+  ('i965-va-driver', { 'xenial': '1.7.0', 'bionic': '2.1.0' })
 ])
 def test_package_is_installed(host, name, version):
     package = host.package(name)
 
     assert package.is_installed
     assert package.version.startswith(version)
+
+
+def test_gpu_packages(host):
+    if host.system_info.codename == "xenial":
+        assert host.package('libva1').is_installed
+    else:
+        assert host.package('libva2').is_installed
+
+
+@pytest.mark.parametrize('path', [
+    '/usr/local/bin/helm',
+    '/etc/kubernetes/kubelet.conf'
+])
+def test_file_is_installed(host, path):
+    assert host.file(path).exists
 
 
 # These services must be enabled.

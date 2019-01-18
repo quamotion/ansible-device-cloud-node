@@ -1,0 +1,30 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: ${MOLECULE_DISTRO:-ubuntu1804}
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu1804}-ansible:latest
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/lib/docker
+    pre_build_image: true
+    command: ""
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+    options:
+      x:
+        - ANSIBLE0016
+        - 405  # Remote package tasks should have a retry
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
