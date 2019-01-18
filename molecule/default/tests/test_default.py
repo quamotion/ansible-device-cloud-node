@@ -20,7 +20,11 @@ def test_package_is_installed(host, name, version):
     package = host.package(name)
 
     assert package.is_installed
-    assert package.version.startswith(version)
+
+    if isinstance(version, dict):
+        assert package.version.startswith(version[host.system_info.codename])
+    else:
+        assert package.version.startswith(version)
 
 
 def test_gpu_packages(host):
