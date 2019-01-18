@@ -16,6 +16,8 @@ platforms:
     command: ""
 provisioner:
   name: ansible
+  playbooks:
+    side_effect: side_effect.yml
   lint:
     name: ansible-lint
     options:

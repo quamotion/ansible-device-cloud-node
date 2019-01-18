@@ -62,6 +62,16 @@
     update_cache: true
   when: apt_docker.changed or apt_kubernetes.changed
 
+- name: Pin Kubernetes package versions.
+  template:
+    src: apt-preferences-kubernetes.j2
+    dest: /etc/apt/preferences.d/kubernetes
+
+- name: Pin Docker package versions.
+  template:
+    src: apt-preferences-docker.j2
+    dest: /etc/apt/preferences.d/docker
+
 - name: Install Docker
   apt:
     pkg: docker-ce={{ docker_version }}

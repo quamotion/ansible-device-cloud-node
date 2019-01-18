@@ -1,0 +1,8 @@
+---
+- name: Side-Effects
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Upgrade apt packages
+      apt:
+        upgrade: true
