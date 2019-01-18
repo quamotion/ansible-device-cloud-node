@@ -1,6 +1,5 @@
 ---
 - name: Converge
   hosts: all
-  vars:
   roles:
     - role: ansible-device-cloud-node
