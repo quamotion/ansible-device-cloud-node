@@ -5,8 +5,10 @@ cache: pip
 
 env:
   matrix:
-    - MOLECULE_DISTRO: ubuntu1804
-    - MOLECULE_DISTRO: ubuntu1604
+    - MOLECULE_DISTRO: ubuntu1804 SCENARIO_NAME=default
+    - MOLECULE_DISTRO: ubuntu1804 SCENARIO_NAME=no-role
+    - MOLECULE_DISTRO: ubuntu1604 SCENARIO_NAME=default
+    - MOLECULE_DISTRO: ubuntu1604 SCENARIO_NAME=no-role
 
 before_install:
   - swapoff -a
@@ -23,4 +25,7 @@ install:
   - ansible-lint --version
 script:
   - ansible-lint -x ANSIBLE0016 -x 405 .
-  - molecule test --all
+  - molecule test --scenario-name $SCENARIO_NAME
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

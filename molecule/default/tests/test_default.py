@@ -13,7 +13,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
   ('kubeadm', '1.12.1'),
   ('kubectl', '1.12.1'),
   ('docker-ce', '18.06.0'),
-  ('gitlab-runner', '11.6'),
+  ('gitlab-runner', '11.7'),
   ('i965-va-driver', {'xenial': '1.7.0', 'bionic': '2.1.0'})
 ])
 def test_package_is_installed(host, name, version):
