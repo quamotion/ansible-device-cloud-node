@@ -1,4 +1,13 @@
 ---
+- name: Print system configuration
+  debug:
+    msg: "System {{ inventory_hostname }} has {{ ansible_memory_mb.real.total }} of memory, and {{ ansible_processor_vcpus }} vCPUs"
+
+- name: Check system requirements
+  assert:
+    that:
+      - ansible_memory_mb.real.total >= {{ kubernetes_required_memory }}
+      - ansible_processor_vcpus >= {{ kubernetes_required_vcpus }}
 
 - name: Add the required apt packages
   apt:
