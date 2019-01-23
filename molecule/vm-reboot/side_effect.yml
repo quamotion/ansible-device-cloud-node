@@ -1,0 +1,13 @@
+---
+- name: Side-Effects
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Reboot the server and wait for it to come back up.
+      reboot:
+      become: true
+
+    # Pause to give Kubernetes time to start up
+    - name: Pausing to allow Kubernetes to start
+      pause:
+        seconds: 45

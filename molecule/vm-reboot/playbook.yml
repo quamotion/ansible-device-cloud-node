@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    - device_farm_role: master
+    # Preseeding of Docker images is currently not idempotent
+    - preseed_docker_images: false
+  roles:
+    - role: ansible-device-cloud-node
