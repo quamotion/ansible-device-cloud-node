@@ -77,7 +77,8 @@
     not kubernetes_init_stat.stat.exists
     and ('device-farm-workers' not in groups or groups['device-farm-workers'] | length == 0)
 
-- name: Craete Helm service account
+- name: Create Helm service account
+  become: false
   k8s:
     state: present
     definition:
@@ -88,6 +89,7 @@
         namespace: kube-system
 
 - name: Create Helm ClusterRoleBinding
+  become: false
   k8s:
     state: present
     definition:
