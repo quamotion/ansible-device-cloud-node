@@ -26,3 +26,4 @@ kubernetes_kubeadm_init_extra_opts: ""
 gitlab_runner_package: "gitlab-runner"
 gitlab_runner_gpg: "https://packages.gitlab.com/gpg.key"
 gitlab_runner_repo: "deb https://packages.gitlab.com/runner/{{ gitlab_runner_package }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} main"
+gitlab_runner_version: 11.7.0
