@@ -23,6 +23,12 @@ flannel_version: bc79dd1505b0c8681ece4de4c0d86c5cd2643275
 kubernetes_ignore_preflight_errors: ""
 kubernetes_kubeadm_init_extra_opts: ""
 
+# Standard system requirements for Kubernetes
+# Memory is actually in MiB instead of MB (because /proc/meminfo used KiB),
+# and 4 GB = 3814 MiB
+kubernetes_required_memory: 3814
+kubernetes_required_vcpus: 2
+
 gitlab_runner_package: "gitlab-runner"
 gitlab_runner_gpg: "https://packages.gitlab.com/gpg.key"
 gitlab_runner_repo: "deb https://packages.gitlab.com/runner/{{ gitlab_runner_package }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} main"
