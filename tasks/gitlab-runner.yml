@@ -20,4 +20,3 @@
   template:
     src: apt-preferences-gitlab.j2
     dest: /etc/apt/preferences.d/gitlab
-
