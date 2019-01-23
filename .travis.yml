@@ -23,4 +23,4 @@ install:
   - ansible-lint --version
 script:
   - ansible-lint -x ANSIBLE0016 -x 405 .
-  - molecule test
+  - molecule test --all
