@@ -1,0 +1,30 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    box: bento/ubuntu-18.04
+    # The roles will check for 4096 MB (4 GB), but
+    # 4 GB in VirtualBox is actually a bit less for the VM,
+    # as some memory is also consumed by the graphics card,... .
+    # So give 4200 MB.
+    memory: 4200
+    cpus: 2
+provisioner:
+  name: ansible
+  playbooks:
+    side_effect: side_effect.yml
+  lint:
+    name: ansible-lint
+scenario:
+  name: vm-reboot
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

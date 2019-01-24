@@ -11,6 +11,19 @@
       - ansible_memory_mb.real.total >= {{ kubernetes_required_memory }}
       - ansible_processor_vcpus >= {{ kubernetes_required_vcpus }}
 
+# Disable swap; Kubernetes doesn't run with swap enabled
+# Debug
+- name: Remove swap from /etc/fstab (Ubuntu)
+  mount:
+    path: none
+    fstype: swap
+    state: absent
+  when: ansible_distribution == "Ubuntu"
+
+- name: Disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
 - name: Add the required apt packages
   apt:
     pkg:
