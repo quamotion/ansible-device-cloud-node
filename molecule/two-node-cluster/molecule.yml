@@ -1,0 +1,34 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: node-master
+    box: bento/ubuntu-18.04
+    memory: 2048
+    cpus: 2
+  - name: node-worker
+    box: bento/ubuntu-18.04
+    memory: 2048
+    cpus: 2
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      node-master:
+        device_farm_role: master
+      node-worker:
+        device_farm_role: worker
+  lint:
+    name: ansible-lint
+scenario:
+  name: two-node-cluster
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
