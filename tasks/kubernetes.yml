@@ -4,12 +4,21 @@
     msg: |
       System {{ inventory_hostname }} has {{ ansible_memory_mb.real.total }}
       of memory, and {{ ansible_processor_vcpus }} vCPUs
+  # When these facts are not defined (because fact gather is disabled, for
+  # example when creating the installer .iso), don't fail but just skip the
+  # check.
+  when:
+    - ansible_memory_mb is defined
+    - ansible_processor_vcpus is defined
 
 - name: Check system requirements
   assert:
     that:
       - ansible_memory_mb.real.total >= {{ kubernetes_required_memory }}
       - ansible_processor_vcpus >= {{ kubernetes_required_vcpus }}
+  when:
+    - ansible_memory_mb is defined
+    - ansible_processor_vcpus is defined
 
 # Disable swap; Kubernetes doesn't run with swap enabled
 # Debug
@@ -22,7 +31,9 @@
 
 - name: Disable swap
   command: swapoff -a
-  when: ansible_swaptotal_mb > 0
+  when:
+    - ansible_swaptotal_mb is defined
+    - ansible_swaptotal_mb > 0
 
 - name: Add the required apt packages
   apt:
