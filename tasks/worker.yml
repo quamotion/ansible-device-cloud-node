@@ -3,4 +3,8 @@
 - name: Join node to the Kubernetes cluster
   command: >
     {{ kubeadm_join_command }}
+    {% if kubernetes_ignore_preflight_errors %}
+    --ignore-preflight-errors {{ kubernetes_ignore_preflight_errors }}
+    {% endif %}
+    {{ kubernetes_kubeadm_join_extra_opts }}
     creates=/etc/kubernetes/kubelet.conf

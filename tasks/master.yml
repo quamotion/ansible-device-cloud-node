@@ -4,14 +4,36 @@
     path: /etc/kubernetes/admin.conf
   register: kubernetes_init_stat
 
+- name: Print kubeadm init command
+  debug:
+    msg: >-
+      kubeadm init
+      --pod-network-cidr {{ pod_network }}
+      --token {{ kubeadm_token }}
+      --kubernetes-version v{{ kubernetes_version }}
+      --apiserver-cert-extra-sans {{ inventory_hostname }}
+      {% if kubernetes_apiserver_advertise_address %}
+      --apiserver-advertise-address {{ kubernetes_apiserver_advertise_address }}
+      {% endif %}
+      {% if kubernetes_ignore_preflight_errors %}
+      --ignore-preflight-errors {{ kubernetes_ignore_preflight_errors }}
+      {% endif %}
+      {{ kubernetes_kubeadm_init_extra_opts }}
+  when: not kubernetes_init_stat.stat.exists
+
 - name: Run kubeadm init
   command: >-
     kubeadm init
-    --pod-network-cidr={{ pod_network }}
+    --pod-network-cidr {{ pod_network }}
     --token {{ kubeadm_token }}
     --kubernetes-version v{{ kubernetes_version }}
-    --apiserver-cert-extra-sans={{ inventory_hostname }}
-    --ignore-preflight-errors={{ kubernetes_ignore_preflight_errors }}
+    --apiserver-cert-extra-sans {{ inventory_hostname }}
+    {% if kubernetes_apiserver_advertise_address %}
+    --apiserver-advertise-address {{ kubernetes_apiserver_advertise_address }}
+    {% endif %}
+    {% if kubernetes_ignore_preflight_errors %}
+    --ignore-preflight-errors {{ kubernetes_ignore_preflight_errors }}
+    {% endif %}
     {{ kubernetes_kubeadm_init_extra_opts }}
   when: not kubernetes_init_stat.stat.exists
   ignore_errors: true

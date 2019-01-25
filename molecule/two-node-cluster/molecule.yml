@@ -1,0 +1,43 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: node-master
+    box: bento/ubuntu-18.04
+    memory: 2048
+    cpus: 2
+    interfaces:
+      - auto_config: true
+        ip: "192.168.200.2"
+        network_name: private_network
+  - name: node-worker
+    box: bento/ubuntu-18.04
+    memory: 2048
+    cpus: 2
+    interfaces:
+      - auto_config: true
+        ip: "192.168.200.3"
+        network_name: private_network
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      node-master:
+        device_farm_role: master
+        kubernetes_apiserver_advertise_address: "192.168.200.2"
+      node-worker:
+        device_farm_role: worker
+  lint:
+    name: ansible-lint
+scenario:
+  name: two-node-cluster
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
