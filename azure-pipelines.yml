@@ -1,0 +1,64 @@
+---
+jobs:
+  - job: build
+    variables:
+      SCENARIO_NAME: two-node-cluster-lxd
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+      - script: |
+          sudo apt install -t xenial-backports lxd lxd-client lxd-tools
+
+          sudo adduser $(whoami) lxd
+          sudo systemctl start lxd
+
+          # Debug output
+          lxd --version
+          systemctl status lxd
+        displayName: Install lxd
+
+      - script: |
+          newgrp lxd << EONG
+          id
+
+          lxd init --auto
+
+          lxc network list
+          lxc storage list
+          EONG
+        displayName: Configure LXD
+
+      - script: |
+          ansible --version
+          pip --version
+          python --version
+
+          pip install setuptools
+          pip install wheel
+          pip install ansible-lint molecule
+
+          export PATH=~/.local/bin/:$PATH
+
+          ansible-lint --version
+        displayName: Install Ansible, Molecule
+
+      - script: |
+          sudo swapoff -a
+
+          newgrp lxd << EONG
+          export PATH=~/.local/bin/:$PATH
+
+          ln -s $HOME/work/ansible-device-cloud-node $AGENT_BUILDDIRECTORY/
+          ln -s $AGENT_BUILDDIRECTORY $HOME/work/ansible-device-cloud-node
+
+          echo "HOME: $HOME"
+          echo "AGENT_BUILDDIRECTORY: $AGENT_BUILDDIRECTORY"
+          ls -l $HOME/work
+          ls -l $HOME/work/ansible-device-cloud-node/
+
+          ls -l $AGENT_BUILDDIRECTORY
+          ls -l $AGENT_BUILDDIRECTORY/ansible-device-cloud-node
+
+          ansible-lint -x ANSIBLE0016 -x 405 .
+          molecule test --scenario-name $SCENARIO_NAME
+          EONG

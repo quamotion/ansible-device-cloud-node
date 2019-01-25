@@ -1,0 +1,56 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: lxd
+lint:
+  name: yamllint
+platforms:
+  - name: node-master
+    lxd_image: ubuntu:18.04
+    config:
+      security.privileged: "true"
+      security.nesting: "true"
+    devices:
+      eth0:
+        nictype: bridged
+        parent: lxdbr0
+        type: nic
+      root:
+        path: /
+        pool: default
+        type: disk
+  - name: node-worker
+    lxd_image: ubuntu:18.04
+    config:
+      security.privileged: "true"
+      security.nesting: "true"
+    devices:
+      eth0:
+        nictype: bridged
+        parent: lxdbr0
+        type: nic
+      root:
+        path: /
+        pool: default
+        type: disk
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      node-master:
+        device_farm_role: master
+      node-worker:
+        device_farm_role: worker
+  lint:
+    name: ansible-lint
+    options:
+      x:
+        - 503  # Tasks that run when changed should likely be handlers
+        - 405  # Remote package tasks should have a retry
+scenario:
+  name: two-node-cluster-lxd
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
