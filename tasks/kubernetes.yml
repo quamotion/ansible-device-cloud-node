@@ -34,6 +34,8 @@
   when:
     - ansible_swaptotal_mb is defined
     - ansible_swaptotal_mb > 0
+  # This fails when running inside Docker/LXD containers.
+  ignore_errors: true
 
 - name: Add the required apt packages
   apt:
