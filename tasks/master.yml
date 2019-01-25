@@ -13,7 +13,7 @@
       --kubernetes-version v{{ kubernetes_version }}
       --apiserver-cert-extra-sans {{ inventory_hostname }}
       {% if kubernetes_apiserver_advertise_address %}
-      --apiserver-advertise-address {{ kubernetes_apiserver_advertise_address}}
+      --apiserver-advertise-address {{ kubernetes_apiserver_advertise_address }}
       {% endif %}
       {% if kubernetes_ignore_preflight_errors %}
       --ignore-preflight-errors {{ kubernetes_ignore_preflight_errors }}
