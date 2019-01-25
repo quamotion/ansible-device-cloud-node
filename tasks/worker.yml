@@ -1,4 +1,8 @@
 ---
+- name: Check whether Kubernetes has already been initialized.
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: kubernetes_init_stat
 
 - name: Join node to the Kubernetes cluster
   command: >
@@ -8,3 +12,6 @@
     {% endif %}
     {{ kubernetes_kubeadm_join_extra_opts }}
     creates=/etc/kubernetes/kubelet.conf
+  when:
+    - not kubernetes_init_stat.stat.exists
+    - kubeadm_join_command is defined
