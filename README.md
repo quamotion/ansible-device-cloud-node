@@ -1,6 +1,7 @@
 # Quamotion Device Cloud Node
 
 [![Build Status](https://travis-ci.org/quamotion/ansible-device-cloud-node.svg?branch=master)](https://travis-ci.org/quamotion/ansible-device-cloud-node)
+[![Build Status](https://dev.azure.com/qmfrederik/ansible-device-cloud-node/_apis/build/status/quamotion.ansible-device-cloud-node?branchName=master)](https://dev.azure.com/qmfrederik/ansible-device-cloud-node/_build/latest?definitionId=7&branchName=master)
 
 Configures a server to host the Quamotion Device Cloud. This will install
 Kubernetes, Helm and VAAPI.
