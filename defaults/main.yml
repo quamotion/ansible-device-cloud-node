@@ -1,7 +1,7 @@
 ---
 kubernetes_version: 1.12.1
 docker_version: 18.06.0~ce~3-0~ubuntu
-helm_version: v2.11.0
+helm_version: v2.12.3
 pod_network: 10.244.0.0/16
 flannel_version: v0.11.0
 kubeadm_token: a64b93.7ce2f940e0961d56
