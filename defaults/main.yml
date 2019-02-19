@@ -1,6 +1,6 @@
 ---
 kubernetes_version: 1.12.1
-docker_version: 18.06.0~ce~3-0~ubuntu
+docker_version: 18.06.2~ce~3-0~ubuntu
 helm_version: v2.12.3
 pod_network: 10.244.0.0/16
 flannel_version: v0.11.0
