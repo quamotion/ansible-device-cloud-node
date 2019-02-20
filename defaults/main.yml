@@ -1,5 +1,5 @@
 ---
-kubernetes_version: 1.12.1
+kubernetes_version: 1.12.5
 docker_version: 18.06.2~ce~3-0~ubuntu
 helm_version: v2.12.3
 pod_network: 10.244.0.0/16
