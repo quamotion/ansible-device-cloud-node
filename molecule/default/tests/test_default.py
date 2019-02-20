@@ -12,7 +12,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
   ('kubelet', '1.12.1'),
   ('kubeadm', '1.12.1'),
   ('kubectl', '1.12.1'),
-  ('docker-ce', '18.06.0'),
+  ('docker-ce', '18.06.2'),
   ('gitlab-runner', '11.7'),
   ('i965-va-driver', {'xenial': '1.7.0', 'bionic': '2.1.0'})
 ])
