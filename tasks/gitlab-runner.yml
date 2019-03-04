@@ -9,14 +9,14 @@
     repo: "{{ gitlab_runner_repo }}"
     validate_certs: true
 
+- name: Pin GitLab package versions.
+  template:
+    src: apt-preferences-gitlab.j2
+    dest: /etc/apt/preferences.d/gitlab
+
 - name: Install GitLab runner {{ gitlab_runner_package }}
   apt:
     name: "{{ gitlab_runner_package }}={{ gitlab_runner_version }}"
     state: present
     update_cache: true
   register: installed_gitlab
-
-- name: Pin GitLab package versions.
-  template:
-    src: apt-preferences-gitlab.j2
-    dest: /etc/apt/preferences.d/gitlab
