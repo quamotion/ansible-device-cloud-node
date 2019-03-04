@@ -41,3 +41,6 @@ verifier:
   name: testinfra
   lint:
     name: flake8
+  directory: ../default/tests/
+  options:
+    sudo: true

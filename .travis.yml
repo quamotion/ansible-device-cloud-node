@@ -17,6 +17,7 @@ before_install:
 install:
   - pip install ansible-lint molecule docker
   - ansible-lint --version
+  - molecule --version
 script:
   - ansible-lint -x ANSIBLE0016 -x 405 .
   - molecule test --scenario-name $SCENARIO_NAME

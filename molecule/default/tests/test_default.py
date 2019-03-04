@@ -1,5 +1,6 @@
 import os
 import pytest
+import yaml
 
 import testinfra.utils.ansible_runner
 
@@ -53,7 +54,7 @@ def test_service_is_enabled(host, name):
     assert service.is_enabled
 
 
-# These sevices must be running
+# These services must be running
 @pytest.mark.parametrize('name', [
     'docker',
     'kubelet'
@@ -78,3 +79,11 @@ def test_helm_version_works(host):
 
 def test_helm_list_works(host):
     host.run_expect([0], "helm list")
+
+
+def test_kubernetes_kubelet_config(host):
+    kubelet_config_file = host.file("/var/lib/kubelet/config.yaml")
+    kubelet_config = yaml.load(kubelet_config_file.content)
+
+    strategyKey = "configMapAndSecretChangeDetectionStrategy"
+    assert kubelet_config[strategyKey] == "Cache"
