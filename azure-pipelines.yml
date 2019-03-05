@@ -59,6 +59,6 @@ jobs:
           ls -l $AGENT_BUILDDIRECTORY
           ls -l $AGENT_BUILDDIRECTORY/ansible-device-cloud-node
 
-          ansible-lint -x ANSIBLE0016 -x 405 .
+          ansible-lint -x ANSIBLE0016 .
           molecule test --scenario-name $SCENARIO_NAME
           EONG
