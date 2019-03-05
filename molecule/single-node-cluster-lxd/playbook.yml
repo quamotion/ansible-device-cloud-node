@@ -1,5 +1,11 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    # Preseeding of Docker images is currently not idempotent
+    - preseed_docker_images: false
+    - kubernetes_ignore_preflight_errors:
+        "SystemVerification,\
+        FileContent--proc-sys-net-bridge-bridge-nf-call-iptables"
   roles:
     - role: ansible-device-cloud-node
