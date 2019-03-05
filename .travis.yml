@@ -19,7 +19,7 @@ install:
   - ansible-lint --version
   - molecule --version
 script:
-  - ansible-lint -x ANSIBLE0016 -x 405 .
+  - ansible-lint -x ANSIBLE0016 .
   - molecule test --scenario-name $SCENARIO_NAME
 
 notifications:

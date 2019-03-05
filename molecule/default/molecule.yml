@@ -23,7 +23,6 @@ provisioner:
     options:
       x:
         - ANSIBLE0016
-        - 405  # Remote package tasks should have a retry
 scenario:
   name: default
 verifier:
