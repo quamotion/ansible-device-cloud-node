@@ -54,4 +54,9 @@
       - kubernetes_init_stat.stat is defined
       - not kubernetes_init_stat.stat.exists
 
+  # Workaround for https://github.com/kubernetes/kubernetes/issues/74412
+  - include_tasks: configure-configmap-change-detection.yml
+    when:
+      - device_farm_role is defined
+
   become: true

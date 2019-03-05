@@ -14,15 +14,7 @@ platforms:
     cpus: 2
     interfaces:
       - auto_config: true
-        ip: "192.168.200.2"
-        network_name: private_network
-  - name: node-worker
-    box: bento/ubuntu-18.04
-    memory: 2048
-    cpus: 2
-    interfaces:
-      - auto_config: true
-        ip: "192.168.200.3"
+        ip: "192.168.200.12"
         network_name: private_network
 provisioner:
   name: ansible
@@ -30,13 +22,11 @@ provisioner:
     host_vars:
       node-master:
         device_farm_role: master
-        kubernetes_apiserver_advertise_address: "192.168.200.2"
-      node-worker:
-        device_farm_role: worker
+        kubernetes_apiserver_advertise_address: "192.168.200.12"
   lint:
     name: ansible-lint
 scenario:
-  name: two-node-cluster
+  name: single-node-cluster
 verifier:
   name: testinfra
   lint:
