@@ -1,8 +1,12 @@
 ---
 jobs:
   - job: build
-    variables:
-      SCENARIO_NAME: two-node-cluster-lxd
+    strategy:
+      matrix:
+        two_node_cluster_lxd:
+          SCENARIO_NAME: 'two-node-cluster-lxd'
+        single_node_cluster_lxd:
+          SCENARIO_NAME: 'single-node-cluster-lxd'
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
