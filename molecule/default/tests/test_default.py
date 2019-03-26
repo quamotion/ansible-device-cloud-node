@@ -10,9 +10,9 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 # These packages must be installed, and at the correct version
 @pytest.mark.parametrize('name,version', [
-  ('kubelet', '1.12.5'),
-  ('kubeadm', '1.12.5'),
-  ('kubectl', '1.12.5'),
+  ('kubelet', '1.14.0'),
+  ('kubeadm', '1.14.0'),
+  ('kubectl', '1.14.0'),
   ('docker-ce', '18.06.2'),
   ('gitlab-runner', '11.7'),
   ('i965-va-driver', {'xenial': '1.7.0', 'bionic': '2.1.0'})
