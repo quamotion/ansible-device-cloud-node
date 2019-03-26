@@ -26,10 +26,6 @@ kubernetes_apiserver_advertise_address: ""
 kubernetes_required_memory: 3814
 kubernetes_required_vcpus: 2
 
-# Workaround for https://github.com/kubernetes/kubernetes/issues/74412, as in
-# https://github.com/kubernetes/kubernetes/pull/74841 (and related)
-kubernetes_config_map_and_secret_change_detection_strategy: "Cache"
-
 gitlab_runner_package: "gitlab-runner"
 gitlab_runner_gpg: "https://packages.gitlab.com/gpg.key"
 gitlab_runner_repo: "deb https://packages.gitlab.com/runner/{{ gitlab_runner_package }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} main"
