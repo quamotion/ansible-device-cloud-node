@@ -1,5 +1,5 @@
 ---
-kubernetes_version: 1.12.5
+kubernetes_version: 1.14.0
 docker_version: 18.06.2~ce~3-0~ubuntu
 helm_version: v2.12.3
 pod_network: 10.244.0.0/16
@@ -25,10 +25,6 @@ kubernetes_apiserver_advertise_address: ""
 # and 4 GB = 3814 MiB
 kubernetes_required_memory: 3814
 kubernetes_required_vcpus: 2
-
-# Workaround for https://github.com/kubernetes/kubernetes/issues/74412, as in
-# https://github.com/kubernetes/kubernetes/pull/74841 (and related)
-kubernetes_config_map_and_secret_change_detection_strategy: "Cache"
 
 gitlab_runner_package: "gitlab-runner"
 gitlab_runner_gpg: "https://packages.gitlab.com/gpg.key"
